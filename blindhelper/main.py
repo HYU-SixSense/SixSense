@@ -2,7 +2,7 @@ from screenshot import Screenshot
 from TTS import TextToSpeech
 from ImageLabeler import ImageLabeler
 from OpenAIChat import OpenAIChat
-from pykospacing import Spacing
+# from pykospacing import Spacing
 import keyboard, time
 import os
 import sys
@@ -50,8 +50,8 @@ def captureStart():
                 result_lst.append(text)
     
     result = ''.join(result_lst)
-    spacing = Spacing()
-    result = spacing(result)
+    # spacing = Spacing()
+    # result = spacing(result)
 
     print(result)
 

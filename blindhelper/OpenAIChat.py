@@ -1,8 +1,9 @@
 import openai
+import os
 
 class OpenAIChat:
     def __init__(self):
-        openai.api_key = "이거 openai api 키 넣기..."
+        self.openai_api_key = os.environ.get('OPENAI_API_KEY')
         self.model = "gpt-4"
 
     def get_completion(self, prompt, temperature=0):
