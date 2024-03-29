@@ -9,6 +9,11 @@ import sys
 import uuid
 import hashlib
 import requests
+from pynput import keyboard
+from pynput.keyboard import Key, Controller, Listener
+
+
+
 
 def get_mac_address():
     mac_num = hex(uuid.getnode()).replace('0x', '').upper()
@@ -27,6 +32,9 @@ screenshot = Screenshot()
 tts = TextToSpeech()
 cont = True
 result = ""
+
+
+
 
 def captureStart():
     global result
@@ -98,26 +106,48 @@ def getLicense():
     rst = response.json()
     
     return rst['success']
+
+def on_press(key):
+    try:
+        if key.char == 'q':  # 'q' 키를 누르면
+            captureStart()
+        elif key.char == 'r':
+            
+            summary()
+    except AttributeError:
+        pass
+
+    if key == Key.alt_l and key == Key.ctrl_l:  # 'ctrl' + 'alt' + 'w' 키를 누르면
+        cancel()
+    # 여기에 다른 키 조합에 대한 액션을 추가합니다.
+        
+def on_release(key):
+    if key == Key.esc:
+        # 종료 조건을 여기에 정의합니다.
+        return False
         
 
 def main():
     print("main 실행")
-    keyboard.add_hotkey('ctrl+alt+q', lambda : captureStart())
-    keyboard.add_hotkey('ctrl+alt+w', lambda: cancel())
-    keyboard.add_hotkey('ctrl+alt+e', tts.pause_speech)
-    keyboard.add_hotkey('ctrl+alt+r', tts.resume_speech)
-    keyboard.add_hotkey('ctrl+alt+d', lambda : (tts.start_speech(resource_path('programexit.mp3')), time.sleep(2), globals().update({'cont': False})))
-    keyboard.add_hotkey('ctrl+alt+f', lambda : summary())
+    # keyboard.add_hotkey('ctrl+alt+q', lambda : captureStart())
+    # keyboard.add_hotkey('ctrl+alt+w', lambda: cancel())
+    # keyboard.add_hotkey('ctrl+alt+e', tts.pause_speech)
+    # keyboard.add_hotkey('ctrl+alt+r', tts.resume_speech)
+    # keyboard.add_hotkey('ctrl+alt+d', lambda : (tts.start_speech(resource_path('programexit.mp3')), time.sleep(2), globals().update({'cont': False})))
+    # keyboard.add_hotkey('ctrl+alt+f', lambda : summary())
+    with Listener(on_press=on_press, on_release=on_release) as listener:
+        listener.join()
     
 if __name__ == "__main__":
-    if (getLicense() == "True"):
-        tts.start_speech(resource_path('programstart.mp3'))
-        main()
-        while cont:
-            pass
-    elif (getLicense() == "afterdemo"):
-        tts.start_speech(resource_path('afterdemo.mp3'))
-    elif (getLicense() == "nomac"):
-        tts.start_speech(resource_path('hash.mp3'))
-    else:
-        tts.start_speech(resource_path('hash.mp3'))
+    # if (getLicense() == "True"):
+    #     tts.start_speech(resource_path('programstart.mp3'))
+    #     main()
+    #     while cont:
+    #         pass
+    # elif (getLicense() == "afterdemo"):
+    #     tts.start_speech(resource_path('afterdemo.mp3'))
+    # elif (getLicense() == "nomac"):
+    #     tts.start_speech(resource_path('hash.mp3'))
+    # else:
+    #     tts.start_speech(resource_path('hash.mp3'))
+    main();
