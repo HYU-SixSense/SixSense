@@ -2,21 +2,19 @@ from screenshot import Screenshot
 from TTS import TextToSpeech
 from ImageLabeler import ImageLabeler
 from OpenAIChat import OpenAIChat
-# from pykospacing import Spacing
+import openai
+from pykospacing import Spacing
 import keyboard, time
 import os
 import sys
 import uuid
 import hashlib
 import requests
-from pynput import keyboard
-from pynput.keyboard import Key, Controller, Listener
+from dotenv import load_dotenv
 
-
-
+load_dotenv()
 
 def get_mac_address():
-    print(1)
     mac_num = hex(uuid.getnode()).replace('0x', '').upper()
     mac = ''.join(mac_num[i: i + 2] for i in range(0, 11, 2))
     return mac
@@ -34,9 +32,6 @@ tts = TextToSpeech()
 cont = True
 result = ""
 
-
-
-
 def captureStart():
     global result
     tts.start_speech(resource_path('capturestart.mp3'))
@@ -47,6 +42,7 @@ def captureStart():
         tts.start_speech(resource_path('capturecancel.mp3'))
         return
     full_position = textPosition.detect_document_text() #전체 글자, 좌표
+    img_label = ImageLabeler('screenshot.png').label_image()
     result_lst = []
     for text, coordinate in full_position:
         x1 = coordinate[0][0]
@@ -59,10 +55,11 @@ def captureStart():
                 result_lst.append(text)
     
     result = ''.join(result_lst)
-    # spacing = Spacing()
-    # result = spacing(result)
+    spacing = Spacing()
+    result = spacing(result)
 
     print(result)
+    print(f"img_label: {img_label}")
 
 
     if result != "":
@@ -80,13 +77,16 @@ def summary():
     print(lst)
     if len(lst) == 0:
         print("여기")
-        prompt = "화면에서 분석한 텍스트 정보가 있습니다. 화면에서 추출한 텍스트 정보는 다음과 같습니다: [{}]. 화면 텍스트 정보를 요약해서 설명해줘. 문맥 상 이상한 단어들을 제외하고, 분석 결과를 말하지 말고 요약 결과만 말해줘.".format(result)
-    elif result == "":
-        print("여기2")
-        prompt = "화면에서 분석한 이미지 정보가 있습니다. 이미지 분석 결과, 다음 키워드들이 도출되었습니다: [{}]. 사진에 대해서 간단하게 설명해줘. 분석 결과를 말하지 말고 요약 결과만 말해줘.".format(result2)
+        # prompt = "화면에서 분석한 텍스트 정보가 있습니다. 화면에서 추출한 텍스트 정보는 다음과 같습니다: [{}]. 화면 텍스트 정보를 요약해서 설명해줘. 문맥 상 이상한 단어들을 제외하고, 분석 결과를 말하지 말고 요약 결과만 말해줘.".format(result)
+        prompt = f"화면에서 분석한 텍스트 정보가 있습니다. 화면에서 추출한 텍스트 정보는 다음과 같습니다: [{result}]. 화면 텍스트 정보를 요약해서 설명해줘. 문맥 상 이상한 단어들을 제외하고, 분석 결과를 말하지 말고 요약 결과만 말해줘."
+    # elif result == "":
+    #     print("여기2")
+        # prompt = "화면에서 분석한 이미지 정보가 있습니다. 이미지 분석 결과, 다음 키워드들이 도출되었습니다: [{}]. 사진에 대해서 간단하게 설명해줘. 분석 결과를 말하지 말고 요약 결과만 말해줘.".format(result2)
+        # prompt = f"화면에서 분석한 이미지 정보가 있습니다. 이미지 분석 결과, 다음 키워드들이 도출되었습니다: [{result2}]. 사진에 대해서 간단하게 설명해줘. 분석 결과를 말하지 말고 요약 결과만 말해줘."
     else:
         print("저기")
-        prompt = "화면에서 분석한 이미지와 텍스트 정보가 있습니다. 이미지 분석 결과, 다음 키워드들이 도출되었습니다: [{}]. 또한 화면에서 추출한 텍스트 정보는 다음과 같습니다: [{}]. 사진에 대해서 간단하게 설명해줘. 그 후에 텍스트 정보를 요약해서 설명해줘. 문맥 상 이상한 단어들을 제외하고, 분석 결과를 말하지 말고 요약 결과만 말해줘.".format(result2, result)
+        # prompt = "화면에서 분석한 이미지와 텍스트 정보가 있습니다. 이미지 분석 결과, 다음 키워드들이 도출되었습니다: [{}]. 또한 화면에서 추출한 텍스트 정보는 다음과 같습니다: [{}]. 사진에 대해서 간단하게 설명해줘. 그 후에 텍스트 정보를 요약해서 설명해줘. 문맥 상 이상한 단어들을 제외하고, 분석 결과를 말하지 말고 요약 결과만 말해줘.".format(result2, result)
+        prompt = f"화면에서 분석한 텍스트 정보가 있습니다. 화면에서 추출한 텍스트 정보는 다음과 같습니다: [{result}]. 화면 텍스트 정보를 요약해서 설명해줘. 문맥 상 이상한 단어들을 제외하고, 분석 결과를 말하지 말고 요약 결과만 말해줘."
     
     chat = OpenAIChat()
     response = chat.get_completion(prompt)
@@ -99,56 +99,36 @@ def cancel():
     tts.start_speech(resource_path('cancel.mp3'))
 
 def getLicense():
-    hash_object = hashlib.sha256(get_mac_address().encode())
-    hex_dig = hash_object.hexdigest()
-    url = 'http://192.249.31.17:5000/getmac'
-    data = {'mac': hex_dig}
-    response = requests.post(url, data=data)
-    rst = response.json()
+    return "True"
+    # hash_object = hashlib.sha256(get_mac_address().encode())
+    # hex_dig = hash_object.hexdigest()
+    # url = 'http://192.249.31.17:5000/getmac'
+    # data = {'mac': hex_dig}
+    # response = requests.post(url, data=data)
+    # rst = response.json()
     
-    return rst['success']
-
-def on_press(key):
-    try:
-        if key.char == 'q':  # 'q' 키를 누르면
-            captureStart()
-        elif key.char == 'r':
-            
-            summary()
-    except AttributeError:
-        pass
-
-    if key == Key.alt_l and key == Key.ctrl_l:  # 'ctrl' + 'alt' + 'w' 키를 누르면
-        cancel()
-    # 여기에 다른 키 조합에 대한 액션을 추가합니다.
-        
-def on_release(key):
-    if key == Key.esc:
-        # 종료 조건을 여기에 정의합니다.
-        return False
+    # return rst['success']
         
 
 def main():
     print("main 실행")
-    # keyboard.add_hotkey('ctrl+alt+q', lambda : captureStart())
-    # keyboard.add_hotkey('ctrl+alt+w', lambda: cancel())
-    # keyboard.add_hotkey('ctrl+alt+e', tts.pause_speech)
-    # keyboard.add_hotkey('ctrl+alt+r', tts.resume_speech)
-    # keyboard.add_hotkey('ctrl+alt+d', lambda : (tts.start_speech(resource_path('programexit.mp3')), time.sleep(2), globals().update({'cont': False})))
-    # keyboard.add_hotkey('ctrl+alt+f', lambda : summary())
-    with Listener(on_press=on_press, on_release=on_release) as listener:
-        listener.join()
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+    keyboard.add_hotkey('ctrl+alt+q', lambda : captureStart())
+    keyboard.add_hotkey('ctrl+alt+w', lambda: cancel())
+    keyboard.add_hotkey('ctrl+alt+e', tts.pause_speech)
+    keyboard.add_hotkey('ctrl+alt+r', tts.resume_speech)
+    keyboard.add_hotkey('ctrl+alt+d', lambda : (tts.start_speech(resource_path('programexit.mp3')), time.sleep(2), globals().update({'cont': False})))
+    keyboard.add_hotkey('ctrl+alt+f', lambda : summary())
     
 if __name__ == "__main__":
-    # if (getLicense() == "True"):
-    #     tts.start_speech(resource_path('programstart.mp3'))
-    #     main()
-    #     while cont:
-    #         pass
-    # elif (getLicense() == "afterdemo"):
-    #     tts.start_speech(resource_path('afterdemo.mp3'))
-    # elif (getLicense() == "nomac"):
-    #     tts.start_speech(resource_path('hash.mp3'))
-    # else:
-    #     tts.start_speech(resource_path('hash.mp3'))
-    main();
+    if (getLicense() == "True"):
+        tts.start_speech(resource_path('programstart.mp3'))
+        main()
+        while cont:
+            pass
+    elif (getLicense() == "afterdemo"):
+        tts.start_speech(resource_path('afterdemo.mp3'))
+    elif (getLicense() == "nomac"):
+        tts.start_speech(resource_path('hash.mp3'))
+    else:
+        tts.start_speech(resource_path('hash.mp3'))

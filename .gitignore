@@ -1,0 +1,6 @@
+/.venv/
+.env
+service_secret_key.json
+fullscreenshot.png
+screenshot.png
+__pycache__/
