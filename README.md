@@ -15,71 +15,21 @@ MadCamp Week4 1분반
 
 ## 2. 개발환경
 
-- Language: JavaScript, HTML, CSS, Python
+- Language: Python
 - Server: Flask
 - DataBase: MongoDB
 - IDE: Visual Studio code 
 
-## 3. WEB
-
-### a - 시작 페이지
-
-<img width="1280" alt="image" src="https://github.com/Madweek4/madcamp_week4/assets/82389577/be666f35-04b5-40a7-9cb0-ef6bcfd6219b">
-
-***Major features***
-
-- BlindHelper와 License Program을 배포하기 위한 사이트이다.
+기 위한 사이트이다.
 - 화면 중앙의 버튼 3개는 차례대로 로그인, 회원가입, 디테일 보기 버튼이다.
 - 페이지를 이동할 때마다 소리로 알려준다.
 
-### b - 로그인/회원가입 페이지
 
-<img width="1280" alt="image" src="https://github.com/Madweek4/madcamp_week4/assets/82389577/1340b33c-a1d1-4a57-97a0-5084a249b156">
-<img width="1280" alt="image" src="https://github.com/Madweek4/madcamp_week4/assets/82389577/e78c8fe0-d4a8-44a9-b5f7-c107b2b4e2b4">
 
 ***Major features***
 
-- 로그인을 하거나 회원가입을 통해 계정을 생성하고 다운로드 페이지로 이동가능하다.
-- 아이디와 비번을 기반으로 토큰을 생성하여 앞으로의 클라이언트-서버 간 통신에 사용한다.
-
-### c - 디테일 페이지
-
-<img width="1280" alt="image" src="https://github.com/Madweek4/madcamp_week4/assets/82389577/d5429cd2-89a4-4107-9e33-2eb3e6c0ebf3">
-<img width="1280" alt="image" src="https://github.com/Madweek4/madcamp_week4/assets/82389577/51643831-9707-4d29-b55a-d77d86b71c1d">
-<img width="1280" alt="image" src="https://github.com/Madweek4/madcamp_week4/assets/82389577/82f28f85-b8c3-4a78-bba6-ee2b4d670387">
-<img width="1280" alt="image" src="https://github.com/Madweek4/madcamp_week4/assets/82389577/50436a75-64ef-4de5-8901-cda8d21a270d">
-<img width="1280" alt="image" src="https://github.com/Madweek4/madcamp_week4/assets/82389577/427d22c0-1596-431a-9851-74cec1cd1336">
-
-***Major features***
-
-- 우리 팀, 프로그램, 사용법, 더 많은 정보, 후원에 관한 정보를 설명하는 페이지이다.
-- 애니메이션을 적용하여 부드럽게 움직이는 듯한 느낌을 구현했다.
-- Donate를 통해 후원을 할 수 있다.
-
-### d - 다운로드 페이지
-
-<img width="1280" alt="image" src="https://github.com/Madweek4/madcamp_week4/assets/82389577/ca8b9c9e-b427-4dd4-9c79-7c830e308859">
-
-***Major features***
-
-- 결제를 하면 BlindHelper를 사용이 가능하다.
-- 데모 버전은 버튼을 누른 시점 기준으로 3일동안 무료로 BlindHelper의 모든 기능을 체험할 수 있다.
-
-## 4. EXE PROGRAM
-
-### a - License Program
-
-<img width="961" alt="chrome_cSLdJfE6SP" src="https://github.com/Madweek4/madcamp_week4/assets/155048947/eed9dbf0-919e-4d4a-8a6b-d238023b4251">
-<br/><br/><br/>
-
-***Major features***
-
-- BlindHelper 프로그램은 유료로 기획하였기에 무단 복제를 막고자 라이센스를 발급하는 실행파일을 만들었다.
-- 회원가입 후 결제를 한 사용자에게는 본래 라이센스 프로그램을 다운로드할 수 있게 하였고, 결제를 하지 않으면 데모판을 다운로드 할 수 있게 웹을 구성하였다.
-- 프로그램을 실행하면 아이디와 비밀번호를 입력할 수 있는 gui가 뜨고 노란색 버튼을 누르면 라이센스가 발급된다. 데모판의 경우에는 해당 라이센스는 3일 후 사용할 수 없다.
 - 최대한 마우스를 사용하지 않도록 탭을 사용하여 입력할 수 있는 곳을 지정할 수 있게 하였고, 음성(구글 클라우드 TTS api)으로 설명을 해주도록 설계했다. 
 - tkinter 파이썬 라이브러리로 gui를 구성하였다.
-- uuid 라이브러리를 통해 사용자 컴퓨터의 mac 주소를 받아와 hashlib으로 암호화하여 이를 라이센스 코드로 사용하였다.
 - pyinstaller로 실행파일을 만들었다.
 -
   ```
@@ -143,18 +93,7 @@ MadCamp Week4 1분반
 
 
 ## 5. DIRECTORY STRUCTURE
-```
-#라이센스 프로그램
-📦BlindHelperLicense
- ┣ 📂__pycache__
- ┃ ┗ 📜TTS.cpython-310.pyc
- ┣ 📜check.py 
- ┣ 📜error.mp3
- ┣ 📜get.mp3
- ┣ 📜getfinish.mp3
- ┣ 📜service_secret_key.json
- ┗ 📜TTS.py
-```
+
 ```
 #BlindHelper 프로그램
 📦BlindHelper
@@ -197,116 +136,4 @@ MadCamp Week4 1분반
  ┣ 📜TTS.py
  ┣ 📜ttt.py
  ┗ 📜wait.mp3
-```
-```
-#웹서버/클라이언트
-📦web
- ┣ 📂static
- ┃ ┣ 📂audio
- ┃ ┃ ┣ 📂login
- ┃ ┃ ┃ ┣ 📜faillogin.mp3
- ┃ ┃ ┃ ┣ 📜login.mp3
- ┃ ┃ ┃ ┗ 📜suclogin.mp3
- ┃ ┃ ┣ 📂main
- ┃ ┃ ┃ ┣ 📜demo.mp3
- ┃ ┃ ┃ ┣ 📜downexe.mp3
- ┃ ┃ ┃ ┣ 📜downexedemo.mp3
- ┃ ┃ ┃ ┣ 📜downzip.mp3
- ┃ ┃ ┃ ┣ 📜pay.mp3
- ┃ ┃ ┃ ┗ 📜sucpay.mp3
- ┃ ┃ ┣ 📂root
- ┃ ┃ ┃ ┗ 📜welcome.mp3
- ┃ ┃ ┗ 📂signup
- ┃ ┃ ┃ ┣ 📜failsignup.mp3
- ┃ ┃ ┃ ┣ 📜signup.mp3
- ┃ ┃ ┃ ┗ 📜sucsignup.mp3
- ┃ ┣ 📂css
- ┃ ┃ ┣ 📂detail_images
- ┃ ┃ ┃ ┣ 📂fulls
- ┃ ┃ ┃ ┃ ┣ 📜01.jpg
- ┃ ┃ ┃ ┃ ┣ 📜02.jpg
- ┃ ┃ ┃ ┃ ┣ 📜03.jpg
- ┃ ┃ ┃ ┃ ┣ 📜04.jpg
- ┃ ┃ ┃ ┃ ┣ 📜05.jpg
- ┃ ┃ ┃ ┃ ┗ 📜06.jpg
- ┃ ┃ ┃ ┣ 📂thumbs
- ┃ ┃ ┃ ┃ ┣ 📜01.jpg
- ┃ ┃ ┃ ┃ ┣ 📜02.jpg
- ┃ ┃ ┃ ┃ ┣ 📜03.jpg
- ┃ ┃ ┃ ┃ ┣ 📜04.jpg
- ┃ ┃ ┃ ┃ ┣ 📜05.jpg
- ┃ ┃ ┃ ┃ ┣ 📜06.jpg
- ┃ ┃ ┃ ┃ ┣ 📜notion01.png
- ┃ ┃ ┃ ┃ ┣ 📜notion02.png
- ┃ ┃ ┃ ┃ ┣ 📜notion03.png
- ┃ ┃ ┃ ┃ ┗ 📜notion04.png
- ┃ ┃ ┃ ┣ 📜arrow.svg
- ┃ ┃ ┃ ┣ 📜dark-arrow.svg
- ┃ ┃ ┃ ┣ 📜intro.jpg
- ┃ ┃ ┃ ┣ 📜one.jpg
- ┃ ┃ ┃ ┣ 📜overlay.png
- ┃ ┃ ┃ ┣ 📜poptrox-closer.svg
- ┃ ┃ ┃ ┣ 📜poptrox-nav.svg
- ┃ ┃ ┃ ┗ 📜two.jpg
- ┃ ┃ ┣ 📂start_images
- ┃ ┃ ┃ ┣ 📂ie
- ┃ ┃ ┃ ┃ ┣ 📜footer.png
- ┃ ┃ ┃ ┃ ┗ 📜footer.svg
- ┃ ┃ ┃ ┣ 📜bg.jpg
- ┃ ┃ ┃ ┣ 📜overlay-pattern.png
- ┃ ┃ ┃ ┗ 📜overlay.svg
- ┃ ┃ ┣ 📜detail.css
- ┃ ┃ ┣ 📜detail_noscript.css
- ┃ ┃ ┣ 📜start.css
- ┃ ┃ ┣ 📜start_noscript.css
- ┃ ┃ ┗ 📜style.css
- ┃ ┣ 📂js
- ┃ ┃ ┣ 📂detail
- ┃ ┃ ┃ ┣ 📜breakpoints.min.js
- ┃ ┃ ┃ ┣ 📜browser.min.js
- ┃ ┃ ┃ ┣ 📜donate.js
- ┃ ┃ ┃ ┣ 📜jquery.min.js
- ┃ ┃ ┃ ┣ 📜jquery.poptrox.min.js
- ┃ ┃ ┃ ┣ 📜jquery.scrollex.min.js
- ┃ ┃ ┃ ┣ 📜jquery.scrolly.min.js
- ┃ ┃ ┃ ┣ 📜main.js
- ┃ ┃ ┃ ┗ 📜util.js
- ┃ ┃ ┣ 📜login.js
- ┃ ┃ ┣ 📜main.js
- ┃ ┃ ┣ 📜signup.js
- ┃ ┃ ┣ 📜start.js
- ┃ ┃ ┗ 📜url.js
- ┃ ┗ 📂webfonts
- ┃ ┃ ┣ 📜fa-brands-400.eot
- ┃ ┃ ┣ 📜fa-brands-400.svg
- ┃ ┃ ┣ 📜fa-brands-400.ttf
- ┃ ┃ ┣ 📜fa-brands-400.woff
- ┃ ┃ ┣ 📜fa-brands-400.woff2
- ┃ ┃ ┣ 📜fa-regular-400.eot
- ┃ ┃ ┣ 📜fa-regular-400.svg
- ┃ ┃ ┣ 📜fa-regular-400.ttf
- ┃ ┃ ┣ 📜fa-regular-400.woff
- ┃ ┃ ┣ 📜fa-regular-400.woff2
- ┃ ┃ ┣ 📜fa-solid-900.eot
- ┃ ┃ ┣ 📜fa-solid-900.svg
- ┃ ┃ ┣ 📜fa-solid-900.ttf
- ┃ ┃ ┣ 📜fa-solid-900.woff
- ┃ ┃ ┗ 📜fa-solid-900.woff2
- ┣ 📂templates
- ┃ ┣ 📜detail.html
- ┃ ┣ 📜login.html
- ┃ ┣ 📜main.html
- ┃ ┣ 📜main2.html
- ┃ ┣ 📜signup.html
- ┃ ┗ 📜start.html
- ┗ 📜app.py
-```
-```
-#라이센스 발급
-pyinstaller --noconsole --onefile -n="BlindHelperLicense" --add-data "service_secret_key.json;." --add-data "error.mp3;." --add-data "get.mp3;." --add-data "getfinish.mp3;." check.py
-#데모 라이센스 발급
-pyinstaller --noconsole --onefile -n="Demo-BlindHelperLicense" --add-data "service_secret_key.json;." --add-data "error.mp3;." --add-data "get.mp3;." --add-data "getfinish.mp3;." check.py
-#BlindHelper 프로그램
-pyinstaller -n="BlindHelper" --icon="exefolder.ico" --noconsole --add-data "C:\\Users\\KIMSUWHAN\\AppData\\Local\\Programs\\Python\\Python310\\Lib\\site-packages\\pykospacing\\resources\\models\\kospacing;.\\pykospacing\\resources\\models" --add-data "C:\\Users\\KIMSUWHAN\\AppData\\Local\\Programs\\Python\\Python310\\Lib\\site-packages\\pykospacing\\resources\\dicts\\c2v.dic;.\\pykospacing\\resources\\dicts" --add-data "service_secret_key.json;." main.py
-실행 후 mp3 파일들 _internal 폴더에 추가
 ```
